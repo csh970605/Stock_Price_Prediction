@@ -1,1 +1,6 @@
-# Stock_Price_Prediction_Software
+# Stock_Price_Prediction
+
+대한민국 주가의 변동 예측을 그래프로써 나타내 주는 소프트웨어
+
+Python 3.8이상 버전의 설치가 필요합니다.
+
