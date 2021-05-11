@@ -1,7 +1,6 @@
 from threading import Timer
 import pandas as pd
 from urllib.request import urlopen
-from bs4 import BeautifulSoup
 import urllib, pymysql, calendar, time, json
 import numpy as np
 import requests
@@ -63,7 +62,7 @@ class Get_Stock_From_Naver:
         return krx
 
     def update_com_info(self): # 종목코드를 comp_jnfo 테이블에 업데이트한 후 딕셔너리에 저장
-        sql = "SELECT * FROM com_info"
+        sql = "SELECT * FROM com_info order by code desc"
         df = pd.read_sql(sql, self.conn) # comp_info 테이블을 read_sql() 함수로 읽는다.
         for idx in range(len(df)):
             self.codes[df['code'].values[idx]]=df['name'].values[idx]
@@ -88,7 +87,7 @@ class Get_Stock_From_Naver:
                     print(f"[{tmnow}] {idx:04d} REPLACE INTO com_infoVALUES ({code}, {name}, {today})")
                     self.conn.commit()
 
-    def read_naver(self, code): 
+    def read_naver(self, code):
         # 네이버에서 주식 시세를 읽어서 데이터프레임으로 변환
         url = 'http://finance.naver.com/item/sise_day.nhn?code={code}'.format(code=code.strip())
         df = pd.DataFrame()
@@ -107,7 +106,7 @@ class Get_Stock_From_Naver:
             df[['close', 'diff', 'open', 'high', 'low', 'volume']].astype(int)
         df['date'] = pd.to_datetime(df['date'])
         df = df.sort_values(by=['date'], ascending=True)
-        df = df.query("date >= '2016-08-01' and date <= '2020-03-12'")
+        df = df.query("date >= '2016-08-01'")
         df = df.reset_index().drop(['index'], axis=1)
         return df
 
@@ -133,7 +132,7 @@ class Get_Stock_From_Naver:
             df = self.read_naver(code)
             if df is None:
                 continue
-            self.replace_into_db(df, idx, code, self.codes[code]) 
+            self.replace_into_db(df, idx, code, self.codes[code])
             #  일별시세 데이터프레임이 구해지면 replace_into_db() 메서드로 DB에 저장한다.
 
 
@@ -144,4 +143,3 @@ if __name__ == '__main__':
     dbu = Get_Stock_From_Naver()
     dbu.update_daily_price()
     dbu.conn.close()
-
