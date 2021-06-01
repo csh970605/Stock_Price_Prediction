@@ -309,7 +309,7 @@ class WebApplication :
             st.sidebar.text("\n")
             self.bollinger = Bollinger(self.stock_symbol, self.start_date, self.end_date)
             df = self.bollinger.get_dataframe()
-            st.line_chart(df['close'])
+            st.line_chart(df[['close', 'MA', 'Upper', 'Lower']])
             buff, col, buff2 = st.beta_columns([0.1, 0.3, 1])
             col.write('예측확률 : ')
 
