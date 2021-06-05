@@ -304,6 +304,12 @@ class WebApplication :
             self.bollinger = Bollinger(self.stock_symbol, self.start_date, self.end_date)
 
             df = self.bollinger.get_dataframe()
+            
+            df['close'] = df['close'].apply(lambda x: x if x > 0 else 0)
+            df['Upper'] = df['Upper'].apply(lambda x: x if x > 0 else 0)
+            df['Lower'] = df['Lower'].apply(lambda x: x if x > 0 else 0)
+            df['MA'] = df['MA'].apply(lambda x: x if x > 0 else 0)
+            
             st.line_chart(df[['close', 'Upper', 'Lower', 'MA']])
             buff, col, buff2 = st.beta_columns([0.1, 0.3, 1])
             #col.write('예측확률 : ')
