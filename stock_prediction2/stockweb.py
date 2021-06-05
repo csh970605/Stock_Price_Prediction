@@ -8,8 +8,12 @@ class WebApplication :
         st.title("""주식 예측 프로그램""")
         st.text("\n")
 
-        image = Image.open('C:/Users/csh97/PycharmProjects/stock_prediction2/사용방법.png')
-        st.image(image)
+        original_title = '<p style="font-family:Courier; color:Red; font-size: 15px;">※주의※</p>'
+        st.markdown(original_title, unsafe_allow_html=True)
+        original_title = '<p style="font-family:Courier; color:Red; font-size: 15px;">상장이 3년이 안된 주가에대한 데이터의 예측확률은 매우 떨어질 것으로 보임.</p>'
+        st.markdown(original_title, unsafe_allow_html=True)
+        original_title = '<p style="font-family:Courier; color:Red; font-size: 15px;"> 데이터를 주식 투자에 사용할 경우 책임은 전적으로 투자자에게 있음.</p>'
+        st.markdown(original_title, unsafe_allow_html=True)
 
         st.sidebar.header('유저 설정')
         st.sidebar.text("\n")
